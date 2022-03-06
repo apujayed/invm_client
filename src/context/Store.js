@@ -92,7 +92,7 @@ const Store = ({ children }) => {
     });
 
   };
-
+//
   const notify = () =>
     toast.success("Task completed", {
       position: "top-center",
