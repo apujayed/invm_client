@@ -123,14 +123,18 @@ const AddForm = () => {
     var x = sproductList[0].stock;
     var e = a * b *c *d;
     console.log(b);
+
+    setAccounts({
+      ...accounts,
+      qty1: a,
+    });
 if(e<x){
   setAccounts({
     ...accounts,
-    qty1: a,
     qty2: e,
   });
 } else{
-  warningnotify("low product");
+  warningnotify("low product plz purchase");
   setAccounts({
     ...accounts,
     p_id:"0",
