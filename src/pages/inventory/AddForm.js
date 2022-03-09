@@ -87,24 +87,72 @@ const AddForm = () => {
   })
 
 
+    const stockalert = () => {
+    var a = document.getElementById("qty2").value;
+    var b = sproductList[0].stock;
+    if(a>b){
+      warningnotify("plz select product");
+      setAccounts({
+        ...accounts,
+        p_id:"0",
+        product:"",
+        qty1: "0",
+        qty2: "0",
+        rate: "0",
+        total: "0",
+        memo: "",
+      });
+       productFocus.current.focus();
+      setOptionSelectedList({
+        ...optionSelectedList,
+        value: "", label: "" 
+      })
+    }
+
+  };
 
 
-
-  const cal_1 = () => {
-    if(accounts.p_id !=""){
+  const cal_1 = async() => {
+    // var a = document.getElementById("qty2").value;
+    // var b = sproductList[0].stock;
+ if(accounts.p_id !=""){
     var a = document.getElementById("qty1").value;
     var b = sproductList[0].qty_1;
     var c = sproductList[0].qty_2;
     var d = sproductList[0].qty_3;
+    var x = sproductList[0].stock;
     var e = a * b *c *d;
     console.log(b);
-    setAccounts({
-      ...accounts,
-      qty1: a,
-      qty2: e,
-    });
+if(e<x){
+  setAccounts({
+    ...accounts,
+    qty1: a,
+    qty2: e,
+  });
+} else{
+  warningnotify("low product");
+  setAccounts({
+    ...accounts,
+    p_id:"0",
+    product:"",
+    qty1: "0",
+    qty2: "0",
+    rate: "0",
+    total: "0",
+    memo: "",
+  });
 
-  } else{
+  await productFocus.current.focus();
+  setOptionSelectedList({
+    ...optionSelectedList,
+    value: "", label: "" 
+  })
+}
+    
+
+
+  }
+  else{
 warningnotify("plz select product");
   }
   };
@@ -637,7 +685,7 @@ console.log(productdata)
                           value: selectedOption.value, label: selectedOption.label 
                         })
                         selectProduct(selectedOption.value,);
-                        getProductstock();
+                        // getProductstock();
                         // setAccounts({...accounts,product:selectedOption.label})
                       }}
 

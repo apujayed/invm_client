@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 export const Context = React.createContext();
 
 const Store = ({ children }) => {
+  const [serverUrl, setServerurl] = useState("https://server.fahimtraders.com");
   const [tinu, setTinu] = useState("jayed");
   const [edit, setEdit] = useState(false);
   const [accountList, setAccountList] = useState([]);
@@ -38,36 +39,38 @@ const Store = ({ children }) => {
   const [editItem, setEditItem] = useState(null)
 
 
-  const getProduct = () => {
-    Axios.get("http://localhost:3009/product").then((response) => {
+  const getProduct = async () => {
+    await getProductstock();
+    Axios.get(serverUrl+`/product`).then((response) => {
       setproductList(response.data);
     });
     console.log(productList);
   };
 
   const getSelldata = () => {
-    Axios.get("http://localhost:3009/selldata").then((response) => {
+    Axios.get(serverUrl+`/selldata`).then((response) => {
       setSellData(response.data);
     });
     console.log(sellData);
   };
 
-  const getAccounts = () => {
-    Axios.get("http://localhost:3009/employees").then((response) => {
+  const getAccounts = async() => {
+    await getCustomerdue();
+    Axios.get(serverUrl+`/employees`).then((response) => {
       setAccountList(response.data);
     });
     console.log(accountList);
   };
 
   const getTransaction = () => {
-    Axios.get("http://localhost:3009/transaction").then((response) => {
+    Axios.get(serverUrl+`/transaction`).then((response) => {
       setTransaction(response.data);
     });
     console.log(transaction);
   };
 
   const getShead = () => {
-    Axios.get("http://localhost:3009/shead").then((response) => {
+    Axios.get(serverUrl+`/shead`).then((response) => {
       setShead(response.data);
       console.log(response.data);
     });
@@ -75,16 +78,23 @@ const Store = ({ children }) => {
   };
 
   const getProductstock = () => {
-    Axios.get("http://localhost:3009/productstock").then((response) => {
+    Axios.get(serverUrl+`/productstock`).then((response) => {
       // setShead(response.data);
       console.log(`a`+response.data);
     });
     // console.log(shead);
   };
 
+  const getCustomerdue = () => {
+    Axios.get(serverUrl+`/customerdue`).then((response) => {
+      // setShead(response.data);
+      console.log(`a`+response.data);
+    });
+    // console.log(shead);
+  };
 
   const getSelectedproduct = (props) => {
-    Axios.put("http://localhost:3009/sproduct",{
+    Axios.put(serverUrl+`/sproduct`,{
       id: props,
     }).then((response) => {
       setSproductList(response.data);
