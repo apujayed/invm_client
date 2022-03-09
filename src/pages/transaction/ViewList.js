@@ -6,10 +6,10 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { Link } from "react-router-dom";
 const ViewList = () => {
     
-    const {transaction,editItem,accountList,getAccounts,accounts,selectAcccount,deleteAcccount} = useContext(Context);
+    const {serverUrl,transaction,editItem,accountList,getAccounts,accounts,selectAcccount,deleteAcccount} = useContext(Context);
 
-    const [deleteurl, setDeleteurl] = useState("http://localhost:3009/deletetransaction");
-    const [findurl, setFindurl] = useState("http://localhost:3009/selecttransaction")
+    const [deleteurl, setDeleteurl] = useState(serverUrl+`/deletetransaction`);
+    const [findurl, setFindurl] = useState(serverUrl+`/selecttransaction`)
     const columns = [
      
         {

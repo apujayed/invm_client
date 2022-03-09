@@ -260,6 +260,7 @@ const Store = ({ children }) => {
   return (
     <Context.Provider
       value={{
+        serverUrl,
         getProductstock,
         editcartdb,
         setOptionSelectedtransaction,optionSelectedtransaction,

@@ -13,6 +13,7 @@ const AddForm = () => {
   const [isEdit, setIsedit] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const {
+    serverUrl,
     getProductstock,
     editcartdb,
     setisCart,isCart,
@@ -40,8 +41,8 @@ const AddForm = () => {
     inputRef,
   } = useContext(Context);
   const productFocus = useRef();
-  const [addurl, setAddurl] = useState("http://localhost:3009/cartstore");
-  const [updateurl, setUpdateurl] = useState("http://localhost:3009/updatesell");
+  const [addurl, setAddurl] = useState(serverUrl+`/cartstore`);
+  const [updateurl, setUpdateurl] = useState(serverUrl+`updatesell`);
 
   
   // const [count, setCount] = useState(1);
@@ -123,19 +124,17 @@ const AddForm = () => {
     var x = sproductList[0].stock;
     var e = a * b *c *d;
     console.log(b);
-
-    setAccounts({
-      ...accounts,
-      qty1: a,
-    });
+    var st = accounts.sell_type;
+    console.log(`SS`+st)
 if(e<x){
   setAccounts({
     ...accounts,
+    qty1: a,
     qty2: e,
   });
 } else{
-  warningnotify("low product plz purchase");
-  setAccounts({
+  await warningnotify("low product plz purchase");
+  await setAccounts({
     ...accounts,
     p_id:"0",
     product:"",

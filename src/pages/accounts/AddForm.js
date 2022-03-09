@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef,useContext } from "react";
 import { Context } from "../../context/Store";
 const AddForm = () => {
     
-const {editItem,dataInsert,getAccounts,accountList,notify,ToastContainer,shead,getShead,selectAcccount,edit,setEdit,updateData,deleteAcccount,inputRef} = useContext(Context);
+const {serverUrl,editItem,dataInsert,getAccounts,accountList,notify,ToastContainer,shead,getShead,selectAcccount,edit,setEdit,updateData,deleteAcccount,inputRef} = useContext(Context);
 
-const [addurl, setAddurl] = useState("http://localhost:3009/create")
-const [updateurl, setUpdateurl] = useState("http://localhost:3009/update")
+const [addurl, setAddurl] = useState(serverUrl+`/create`)
+const [updateurl, setUpdateurl] = useState(serverUrl+`/update`)
 
 const [accounts, setAccounts] = useState({
   id: "",

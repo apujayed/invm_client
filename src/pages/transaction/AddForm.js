@@ -3,10 +3,10 @@ import { Context } from "../../context/Store";
 import Select from "react-select";
 const AddForm = () => {
     
-const {setOptionSelectedtransaction,optionSelectedtransaction, editItem,dataInsert,getAccounts,accountList,notify,ToastContainer,shead,getShead,selectAcccount,edit,setEdit,updateData,deleteAcccount,inputRef} = useContext(Context);
+const {serverUrl,setOptionSelectedtransaction,optionSelectedtransaction, editItem,dataInsert,getAccounts,accountList,notify,ToastContainer,shead,getShead,selectAcccount,edit,setEdit,updateData,deleteAcccount,inputRef} = useContext(Context);
 
-const [addurl, setAddurl] = useState("http://localhost:3009/createtransaction")
-const [updateurl, setUpdateurl] = useState("http://localhost:3009/updatetransaction")
+const [addurl, setAddurl] = useState(serverUrl+`/createtransaction`)
+const [updateurl, setUpdateurl] = useState(serverUrl+`/updatetransaction`)
 const productFocus = useRef();
 
 
