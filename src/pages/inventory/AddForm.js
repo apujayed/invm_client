@@ -92,7 +92,7 @@ const AddForm = () => {
     var a = document.getElementById("qty2").value;
     var b = sproductList[0].stock;
     if(a>b){
-      warningnotify("plz select product");
+      warningnotify("low product");
       setAccounts({
         ...accounts,
         p_id:"0",
