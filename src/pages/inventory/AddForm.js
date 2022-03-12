@@ -126,34 +126,13 @@ const AddForm = () => {
     console.log(b);
     var st = accounts.sell_type;
     console.log(`SS`+st)
-if(e<x){
-  setAccounts({
-    ...accounts,
-    qty1: a,
-    qty2: e,
-  });
-} else{
-  await warningnotify("low product plz purchase");
-  await setAccounts({
-    ...accounts,
-    p_id:"0",
-    product:"",
-    qty1: "0",
-    qty2: "0",
-    rate: "0",
-    total: "0",
-    memo: "",
-  });
-
-  await productFocus.current.focus();
-  setOptionSelectedList({
-    ...optionSelectedList,
-    value: "", label: "" 
-  })
-}
     
-
-
+    setAccounts({
+      ...accounts,
+      qty1: a,
+      qty2: e,
+    });
+    stockalert();
   }
   else{
 warningnotify("plz select product");
