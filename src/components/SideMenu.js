@@ -23,7 +23,7 @@ export const menuItems = [
   {
     name: "Accounts",
     // exact: true,
-    to: `/acccounts`,
+    to: `/accounts`,
     iconClassName: "bi bi-speedometer2",
     subMenus: [
       { name: "New Account", to: "/accounts/newaccount" },
@@ -49,6 +49,17 @@ export const menuItems = [
     iconClassName: "bi bi-speedometer2",
   },
   {
+    name: "Lc",
+    // exact: true,
+    to: `/lc`,
+    iconClassName: "bi bi-speedometer2",
+    subMenus: [
+      { name: "Purchase", to: "/lc/purchase" },
+      { name: "Sell", to: "/lc/sell" },
+    ],
+  },
+
+  {
     name: "Content 2",
     // exact: true,
     to: `/content-2`,
@@ -68,16 +79,20 @@ const SideMenu = (props) => {
 
 const routePath = useLocation().pathname;
   const onTop = () => {
-    window.scrollTo(10, 0);
+    window.scrollTo(0, 0);
   }
   useEffect(() => {
-    onTop()
-    console.log(routePath)
-  }, [routePath]);
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
+    console.log(routePath.split('/')[1])
+    
+  }, []);
 
 
 
   const handleResize = () => {
+    window.scrollTo(0, 0);
     if (window.innerWidth < 720) {
         setInactive(true)
         console.log();

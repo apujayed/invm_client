@@ -112,6 +112,11 @@ const AddForm = () => {
 
   };
 
+// const cal_2 = async () => {
+//   stockalert();
+// }
+
+
 
   const cal_1 = async() => {
     // var a = document.getElementById("qty2").value;
@@ -125,6 +130,7 @@ const AddForm = () => {
     var e = a * b *c *d;
     console.log(b);
     var st = accounts.sell_type;
+
     console.log(`SS`+st)
     
     setAccounts({
@@ -132,7 +138,10 @@ const AddForm = () => {
       qty1: a,
       qty2: e,
     });
-    stockalert();
+    if(st=="SELL"){
+      stockalert();
+    }
+    
   }
   else{
 warningnotify("plz select product");
@@ -718,7 +727,7 @@ console.log(productdata)
                       name="qty2"
                       placeholder="Qty 2"
                       autocomplete="off"
-                      onChange={getUserData}
+                      onChange={(getUserData)}
                       style={{ fontSize: 14, fontWeight: "bold",textAlign:"right"  }}
                       id="qty2"
                     />
@@ -800,13 +809,7 @@ console.log(productdata)
                 </div>
                 {/* /.col */}
               </div>
-              <style
-                type="text/css"
-                dangerouslySetInnerHTML={{
-                  __html:
-                    "\n fieldset {\n  padding: 0;\n  margin: 0;\n  border: 0;\n\n  min-width: 0;\n}\n\nlegend {\n  display: block;\n  width: 100%;\n  padding: 0;\n  margin-bottom: @line-height-computed;\n  font-size: (@font-size-base * 1.5);\n  line-height: inherit;\n  color: @legend-color;\n  border: 0;\n  border-bottom: 1px solid @legend-border-color;\n}\n\n                      ",
-                }}
-              />
+             
             </div>
           </div>
         </div>

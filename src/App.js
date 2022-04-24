@@ -8,6 +8,8 @@ import Accounts from "./pages/Accounts";
 import Store from "./context/Store";
 import Inventory from "./pages/Inventory";
 import Transaction from "./pages/Transaction";
+import Lcpurchase from "./pages/Lcpurchase";
+import Lcsell from "./pages/Lcsell";
 // const Dashboard = () => <h1>Dashboard</h1>;
 const Content = () => <h1>Content</h1>;
 const Courses = () => <h1>Content/Courses</h1>;
@@ -82,6 +84,12 @@ useEffect(() => {
               <Accounts />
             </Route>
 
+            <Route path={"/lc/purchase"}>
+              <Lcpurchase />
+            </Route>
+            <Route path={"/lc/sell"}>
+              <Lcsell />
+            </Route>
             <Route path="/transaction" component={Transaction} />
             </Store>
 {/*             

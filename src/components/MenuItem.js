@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link,useLocation } from "react-router-dom";
 
 /**
  * @author
@@ -9,6 +9,9 @@ import { NavLink, Link } from "react-router-dom";
 const MenuItem = (props) => {
   const { name, subMenus, iconClassName, onClick, to, exact } = props;
   const [expand, setExpand] = useState(false);
+  const path = useLocation().pathname;
+  const routePath = useLocation().pathname.split('/')[1];
+  const newPA = `/`+routePath;
 
   return (
     <li onClick={props.onClick}>
@@ -18,7 +21,7 @@ const MenuItem = (props) => {
         // onClick={() => {
         //   setExpand((e) => !e);
         // }}
-        className={`menu-item`}
+        className={newPA==to?`menu-item active`:`menu-item`}
       >
         <div className="menu-icon">
           <i className={iconClassName}></i>
@@ -26,9 +29,9 @@ const MenuItem = (props) => {
         <span>{name}</span>
       </Link>
       {subMenus && subMenus.length > 0 ? (
-        <ul className={`sub-menu`}>
+        <ul  className={newPA==to?`sub-menu active`:`sub-menu`}>
           {subMenus.map((menu, index) => (
-            <li key={index}>
+            <li  className={path==menu.to?`active`:``} key={index} >
               <NavLink to={menu.to}>{menu.name}</NavLink>
             </li>
           ))}
