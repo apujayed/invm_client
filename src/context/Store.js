@@ -6,7 +6,7 @@ export const Context = React.createContext();
 // http://localhost:3009 
 // http://server.fahimtraders.com/
 const Store = ({ children }) => {
-  const [serverUrl, setServerurl] = useState("http://server.fahimtraders.com");
+  const [serverUrl, setServerurl] = useState("http://localhost:3009");
   const [tinu, setTinu] = useState("jayed");
   const [edit, setEdit] = useState(false);
   const [accountList, setAccountList] = useState([]);
@@ -65,7 +65,7 @@ const Store = ({ children }) => {
 
   const getAccounts = async() => {
     await getCustomerdue();
-    Axios.get(serverUrl+`/employees`).then((response) => {
+    Axios.get(serverUrl+`/accounts`).then((response) => {
       setAccountList(response.data);
     });
     console.log(accountList);
@@ -159,11 +159,12 @@ const Store = ({ children }) => {
   };
 
 
-  const cartDatainsert = (url,cart) => {
+  const cartDatainsert = (url,cart,actype) => {
     
     // e.preventDefault();
     Axios.post(url, {
       adata: cart,
+      actype: actype,
     }).then(() => {
       notify();
       console.log("hey boyo")
@@ -316,7 +317,7 @@ const selectlcpurchase = (props,findurl) => {
   Axios.put(findurl, {
     id: props,
   }).then((response) => {
-    setCart(response.data);
+    setLcpCart(response.data);
     setEdit(true);
     setLcpurchasestore({ ...lcpurchasestore, 
  
@@ -340,14 +341,11 @@ const updateLcpur = (url,accounts) => {
     adata: accounts,
     // id: currentUserId,
   }).then(() => {
-    // setAccounts([])
     setEditItem(null)
     setEdit(false);
     notify();
-    setOptionSelectedaccount({ value: "", label: ""})
-    // setTimeout(inputRef.current.focus(), 3000);
-    // inputRef.current.focus();
-    // searchInput.current.focus();
+    // setOptionSelectedaccount({ value: "", label: ""})
+    
   });
 };
 
@@ -368,25 +366,25 @@ const deleteLcpur = (props,findurl) => {
 
 
 
-const deleteCartitem = (deleteurl,props) => {
+const deleteCartitem = (deleteurl,props,side) => {
   Axios.put(deleteurl, {
     adata: props,
+    side: side,
   }).then(() => {
     getLcpdata();
     notify();
   });
 };
 
-
-
-
-//lc sell
+//////////
+//lc sell//
 
 const [lcsCart, setLcsCart] = useState([]);
 const [lcsellstore, setLcsellstore] = useState({
   date: "",
   client_id: "",
   client_name: "",
+  client_type: "",
   lc_id: "",
   lc_name: "",
   country: "",
@@ -436,15 +434,127 @@ const getSelectedlcvehicle = (props,country) => {
 
 
 
+const selectlcsell= (props,findurl) => {
+  Axios.put(findurl, {
+    id: props,
+  }).then((response) => {
+    setLcsCart(response.data);
+    setEdit(true);
+    setLcsellstore({ ...lcsellstore, 
+ 
+  v_no: "",
+  type: "",
+  ind_w: "0",
+  bhu_w: "0",
+  posted: "ja-471",
+});
+
+  setOptionSelectedaccount({ value: response.data[0].lc_no, label: response.data[0].lc_name})
+  setOptionlcclient({ value: response.data[0].client_id, label: response.data[0].name})
+  setisCart(!isCart)
+    console.log(response.data);
+  });
+  // console.log(editItem);
+};
 
 
 
 
 
+//////////
+//side sell/pur//
+
+const [sidecart, setSidecart] = useState([]);
+const [sidestore, setSidestore] = useState({
+  date: "",
+  client_id: "",
+  client_name: "",
+  side: "",
+  side_name: "",
+  v_no: "",
+  size: "",
+  ton: "",
+  cft: "",
+  rate: "0",
+  total: "",
+  ld_un: "0",
+  transport: "0",
+  paid: "0",
+  g_total: "N/A",
+  chalan: "N/A",
+  particular: "N/A",
+  posted: "ja-471",
+});
+
+
+//ledger
+
+const getLedg  = async () => {
+  fetch(`http://localhost:3009/pdf`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/pdf"
+    }
+  })
+    .then(res => res.blob())
+    .then(response => {
+      //Create a Blob from the PDF Stream
+      console.log(response);
+      const file = new Blob([response], {
+        type: "application/pdf"
+      });
+      //Build a URL from the file
+      const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window
+      window.open(fileURL);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
 
 
 
+////ledgerreport
+/////////////
+const [ledDetails, setLeddetails] = useState([]);
+const [prevDue, setPrevDue] = useState("0.00");
+const [ledData, setLeddata] = useState({
+  client_id: "",
+  client_name: "",
+  client_address: "",
+  contract: "",
+  from_date: "",
+  to_date: "",
+ 
+});
 
+
+const getAccountled= (props,findurl) => {
+  Axios.put(findurl, {
+    adata: props,
+  }).then((response) => {
+setLeddetails(response.data)
+// console.log(response.data);
+  });
+  // console.log(editItem);
+};
+
+const getPrevDue = (ledData,pdueurl) => {
+  // e.preventDefault();
+  Axios.put(pdueurl, {
+    adata: ledData,
+    // id: currentUserId,
+  }).then((response) => {
+    setPrevDue(response.data[0].due);
+    // console.log(response.data[0].due);
+    // setEditItem(null)
+    // setEdit(false);
+    // notify();
+    // setOptionSelectedaccount({ value: "", label: ""})
+    
+  });
+};
 
 
 useEffect(() => {
@@ -471,6 +581,16 @@ const alertUser = (e) => {
   return (
     <Context.Provider
       value={{
+        prevDue,
+        getPrevDue,
+        ledDetails,
+        getAccountled,
+        setLeddata,
+        ledData,
+        getLedg,
+        sidestore,
+        setSidestore,
+        selectlcsell,
         lcsCart, setLcsCart,
         setLcpCart,
         lcpCart,

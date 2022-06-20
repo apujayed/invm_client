@@ -60,8 +60,8 @@ const AddForm = () => {
   const lcFocus = useRef();
   const clientFocus = useRef();
   const productFocus = useRef();
-  const [url, setUrl] = useState(serverUrl + `/lcpurchase`);
-  const [updateurl, setUpdateurl] = useState(serverUrl + `/updatelcpurchase`);
+  const [url, setUrl] = useState(serverUrl + `/lcsell`);
+  const [updateurl, setUpdateurl] = useState(serverUrl + `/updatelcsell`);
   const [deleteurl, setDeleteurl] = useState(serverUrl + `/deletecart`);
 
   // const [count, setCount] = useState(1);
@@ -105,13 +105,15 @@ const AddForm = () => {
   });
 
 
-
+  const vehicles = lpvehicle.filter(vehicle => vehicle.lc_no == lcsellstore.lc_id);
+  console.log(lcsCart.v_no);
   const productlist = [];
-  lpvehicle.forEach((e) => {
+  vehicles.forEach((e) => {
     productlist.push({
       value: e.id,
       label: e.v_no,
       customAbbreviation: e.type,
+      status: e.cart,
     });
     // console.log(productlist)
   });
@@ -142,12 +144,17 @@ const AddForm = () => {
           {/*      
      <img class="avatar" src="https://pos.softghor.com/dashboard/img/avatar/1.jpg" alt="avater"></img> */}
 
-          <div className="" style={{ display: "flex", fontSize: "12px" }}>
+          <div className="" style={{ display: "flex", fontSize: "12px",fontWeight:"bold"  }}>
             <div>{productlist.label}</div>
             <div
-              style={{ marginLeft: "10px", color: "#ccc", fontSize: "12px" }}
+              style={{ marginLeft: "10px", color: "blue", fontSize: "12px", fontStyle:"italic" ,fontWeight:"bold" }}
             >
               {productlist.customAbbreviation}
+            </div>
+            <div
+              style={{ marginLeft: "10px", color: productlist.status==0?"red":"lime", fontSize: "15px" }}
+            >
+              &#x2022;
             </div>
           </div>
         </div>
@@ -161,6 +168,7 @@ const AddForm = () => {
         value: e.id,
         label: e.name,
         customAbbreviation: e.due,
+        Atype: e.subhead,
       });
     });
   
@@ -171,6 +179,9 @@ const AddForm = () => {
      <div  style={{ fontWeight:"bold", fontSize: "13px" }}>{acoptions.label}</div>
     <div style={{ fontWeight:"bold", color: "red",fontStyle: 'italic',fontSize: "13px" }}>
       {acoptions.customAbbreviation}
+    </div>
+    <div style={{ marginLeft: "10px", color: "#ccc",fontSize: "12px" }}>
+      {acoptions.Atype}
     </div>
      </div>
     : 
@@ -185,6 +196,9 @@ const AddForm = () => {
      <div>{acoptions.label}</div>
     <div style={{ marginLeft: "10px", color: "#ccc",fontSize: "12px" }}>
       {acoptions.customAbbreviation}
+    </div>
+    <div style={{ marginLeft: "10px", color: "#ccc",fontSize: "12px" }}>
+      {acoptions.Atype}
     </div>
      </div>
      
@@ -247,6 +261,7 @@ const AddForm = () => {
     date: "2022-07-09",
     client_id: lcsellstore.client_id,
     client_name: lcsellstore.client_name,
+    client_type: lcsellstore.client_type,
     lc_id: lcsellstore.lc_id,
     lc_name: lcsellstore.lc_name,
     v_no: lcsellstore.v_no,
@@ -257,6 +272,7 @@ const AddForm = () => {
     ind_w: lcsellstore.ind_w,
     bhu_w: lcsellstore.bhu_w,
     posted: "ja-471",
+    particular:  lcsellstore.particular,
   };
 
   const addCart = async (e) => {
@@ -304,33 +320,68 @@ const AddForm = () => {
     }
   };
 
-  const editCart2 = () => {
+  const editCart2 = (e) => {
+    e.preventDefault();
+    if (
+      lcsellstore.rate !=""&&
+      lcsellstore.total != "" &&
+      lcsellstore.ton != 0 &&
+      lcsellstore.v_no != 0 &&
+      lcsellstore.ind_w != 0 &&
+      lcsellstore.bhu_w != 0 &&
+      lcsellstore.total != 0 
+    ) {
     setLcsCart(
       lcsCart.map((elem) => {
         if (elem.id === isEdit) {
           return {
             ...elem,
 
+            client_id: lcsellstore.client_id,
+            client_name: lcsellstore.client_name,
             lc_id: lcsellstore.lc_id,
             lc_name: lcsellstore.lc_name,
             v_no: lcsellstore.v_no,
             type: lcsellstore.type,
+            rate: lcsellstore.rate,
+            total:lcsellstore.total,
+            ton: lcsellstore.ton,
             ind_w: lcsellstore.ind_w,
             bhu_w: lcsellstore.bhu_w,
+            posted: "ja-471",
+            particular:  lcsellstore.particular,
+
           };
         }
         return elem;
       })
     );
+    setLcsellstore({
+      v_no: "",
+      type: "",
+      rate: "0",
+      total: "0",
+      ton: "0",
+      ind_w: "0",
+      bhu_w: "0",
+      particular: "N/A",
+    });
+    setOptionSelectedList({
+      ...optionSelectedList,
+      value: "",
+      label: "Select Vehicle...",
+    });
+  }
+  else{
+    warningnotify("Fill up all data");
+       vehicleFocus.current.focus();
+  }
   };
 
   const editCart = (props) => {
     const item_todo_edited = lcsCart.find((curElem) => {
       return curElem.id === props;
     });
-    // setInputData(item_todo_edited.name);
-    // setIsEditItem(index);
-    // setToggleButton(true);
 
     setLcsellstore({
       ...lcsellstore,
@@ -340,6 +391,10 @@ const AddForm = () => {
       type: item_todo_edited.type,
       ind_w: item_todo_edited.ind_w,
       bhu_w: item_todo_edited.bhu_w,
+      rate: item_todo_edited.rate,
+      total:item_todo_edited.total,
+      ton: item_todo_edited.ton,
+      particular: item_todo_edited.particular,
     });
     setSproductList(lcsCart);
 
@@ -347,23 +402,28 @@ const AddForm = () => {
 
     setOptionSelectedList({
       ...optionSelectedList,
-      value: item_todo_edited.type,
-      label: item_todo_edited.type,
+      value: item_todo_edited.v_no,
+      label: item_todo_edited.v_no,
     });
     // console.log(isEdit);
     console.log(sproductList);
-    productFocus.current.focus();
+    vehicleFocus.current.focus();
   };
 
-  const deleteCart = (props) => {
-    if (lcsCart != null) {
+  const deleteCart = (props,side) => {
+if(lcsCart != null){
+
       alert("are you sure");
-      deleteCartitem(deleteurl, props);
+      deleteCartitem(deleteurl, props,side);
       const updatedItems = lcsCart.filter((curElem) => {
         return curElem.id !== props;
       });
       setLcsCart(updatedItems);
-    } else {
+
+    } 
+    
+    
+    else {
       const updatedItems = lcsCart.filter((curElem) => {
         return curElem.id !== props;
       });
@@ -387,20 +447,24 @@ const AddForm = () => {
   }, 0);
 
   const insertData = (e) => {
+    const actype = lcsellstore.client_type;
     e.preventDefault();
     if(lcsCart.length==0){
       warningnotify("Fill up all data");
     } else {
-      cartDatainsert(url, lcsCart);
+      cartDatainsert(url, lcsCart,actype);
     }
   
 resetLp();
   };
 
   const editdb = (e) => {
+    
     e.preventDefault();
     updateLcpur(updateurl, lcsCart);
-    resetLp();
+    setOptionlcclient( { value: "", label: "Select Account..." });
+    setOptionSelectedaccount({ value: "", label: "Select Lc.."})
+    setOptionSelectedList({value:"", label: "Select Type.."})
   };
 
   const selectProduct = (props,country) => {
@@ -493,6 +557,7 @@ resetLp();
                         setLcsellstore({
                           ...lcsellstore,
                           client_id: selectedOption.value,
+                          client_type: selectedOption.Atype,
                         });
                         setOptionlcclient({
                           ...optionlcclient,
@@ -769,7 +834,7 @@ resetLp();
                         <tr style={{ fontSize: "85%" }}>
                         <th width="5%" >Sl</th>
                           <th width="20%">Account</th>
-                          <th width="10%" >Vehicle</th>
+                          <th width="18%" >Vehicle</th>
                           <th width="10%">Type</th>
                           <th width="10%">Weight</th>
                           <th width="13%">Rate</th>
@@ -828,7 +893,7 @@ resetLp();
                                 <i
                                   className="fa fa-remove"
                                   onClick={() => {
-                                    deleteCart(curElem.id);
+                                    deleteCart(curElem.id,curElem.side);
                                   }}
                                 ></i>
                               </td>
@@ -843,7 +908,7 @@ resetLp();
                             Total Item:{" "}
                             <strong id="totalQty">{lcsCart.length}</strong>{" "}
                           </th>
-                          <th className="text-center" colSpan={3}>
+                          <th className="text-center" colSpan={4}>
                             Total:{" "}
                             <strong id="totalAmount">{cart_total}</strong> Tk
                           </th>

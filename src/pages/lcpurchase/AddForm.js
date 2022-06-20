@@ -249,9 +249,12 @@ const AddForm = () => {
             ind_w: lcpurchasestore.ind_w,
             bhu_w: lcpurchasestore.bhu_w,
           };
+         
         }
         return elem;
+        
       })
+      
     );
   };
 

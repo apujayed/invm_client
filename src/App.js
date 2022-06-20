@@ -10,6 +10,8 @@ import Inventory from "./pages/Inventory";
 import Transaction from "./pages/Transaction";
 import Lcpurchase from "./pages/Lcpurchase";
 import Lcsell from "./pages/Lcsell";
+import Allinventory from "./pages/Allinvntory";
+import CustLedger from "./pages/ledger/CustLedger";
 // const Dashboard = () => <h1>Dashboard</h1>;
 const Content = () => <h1>Content</h1>;
 const Courses = () => <h1>Content/Courses</h1>;
@@ -90,7 +92,15 @@ useEffect(() => {
             <Route path={"/lc/sell"}>
               <Lcsell />
             </Route>
+
+            <Route path={"/allinventory"}>
+              <Allinventory />
+            </Route>
             <Route path="/transaction" component={Transaction} />
+
+            <Route path={"/ledger/custledger"}>
+              <CustLedger />
+            </Route>
             </Store>
 {/*             
             <Route path={"/content/videos"}>

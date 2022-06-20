@@ -11,7 +11,9 @@
 * @repository git://github.com/almasaeed2010/AdminLTE.git
 * @license MIT <http://opensource.org/licenses/MIT>
 */
-
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy'
+ });
 // Make sure jQuery has been loaded
 if (typeof jQuery === 'undefined') {
 throw new Error('AdminLTE requires jQuery')
